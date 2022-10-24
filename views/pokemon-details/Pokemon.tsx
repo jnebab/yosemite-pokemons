@@ -3,7 +3,7 @@ import Layout from "../../layout";
 
 export default function PokemonDetails() {
   return (
-    <Layout>
+    <Layout title="Pokemon Details" description="profile page of a pokemon">
       <Flex>Pokemon Details</Flex>
     </Layout>
   );

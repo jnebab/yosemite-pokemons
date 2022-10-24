@@ -4,10 +4,16 @@ import Layout from "../../layout";
 
 export default function Home() {
   return (
-    <Layout>
-      <Flex direction="column">
-        <MotionBox maxW="50%" mb={6}>
-          <Input placeholder="Search for pokemons and press enter..." />
+    <Layout title="Home" description="Homepage of pokemites">
+      <Flex direction="column" justify="center" align="center">
+        <MotionBox
+          w={{
+            base: "100%",
+            md: "50%",
+          }}
+          mb={6}
+        >
+          <Input placeholder="Type a name of a pokemon then press enter..." />
         </MotionBox>
         <MotionBox>
           <Text fontWeight={"bold"}>List of pokemons here</Text>
