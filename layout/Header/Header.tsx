@@ -42,10 +42,7 @@ export default function Header() {
       <Heading>Pokemites</Heading>
       <Show above="md">
         <Flex gap={6}>
-          <Flex gap={4} align="center">
-            <NextLink href="/">Home</NextLink>
-            <NextLink href="/my-pokemons">My Pokemons</NextLink>
-          </Flex>
+          <NavLinks />
           <ThemeToggle />
         </Flex>
       </Show>
@@ -66,13 +63,19 @@ export default function Header() {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerBody display="grid" height="100%" placeItems="center">
-            <Flex gap={4} align="center" direction="column">
-              <NextLink href="/">Home</NextLink>
-              <NextLink href="/my-pokemons">My Pokemons</NextLink>
-            </Flex>
+            <NavLinks column />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
+    </Flex>
+  );
+}
+
+function NavLinks({ column }: { column?: boolean }) {
+  return (
+    <Flex gap={4} align="center" direction={column ? "column" : "row"}>
+      <NextLink href="/">Home</NextLink>
+      <NextLink href="/my-pokemons">My Pokemons</NextLink>
     </Flex>
   );
 }

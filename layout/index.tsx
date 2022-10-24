@@ -22,11 +22,13 @@ export default function Layout({
         <Header />
         <MotionBox
           as="main"
-          height="calc(100vh - 200px)"
+          minHeight="calc(100vh - 200px)"
           px={{
             base: 6,
             md: 10,
           }}
+          overflowY="auto"
+          overflowX="hidden"
         >
           {children}
         </MotionBox>
