@@ -4,7 +4,13 @@ import { Pokemon, PokemonType } from "../../lib/types/pokemon";
 import MotionBox from "../../components/motion/MotionBox";
 import { useRouter } from "next/router";
 
-export default function PokemonCard({ pokemon }: { pokemon: Pokemon }) {
+export default function PokemonCard({
+  pokemon,
+  hideExplore,
+}: {
+  pokemon: Pokemon;
+  hideExplore?: boolean;
+}) {
   const router = useRouter();
 
   const handleNavigateToPokemonDetails = () => {
@@ -25,7 +31,7 @@ export default function PokemonCard({ pokemon }: { pokemon: Pokemon }) {
         opacity="0.4"
         textAlign="center"
       >
-        {`#${pokemon.id}`}
+        {`#${pokemon?.id}`}
       </Heading>
       <MotionBox
         position="absolute"
@@ -35,16 +41,18 @@ export default function PokemonCard({ pokemon }: { pokemon: Pokemon }) {
         zIndex={10}
         display="grid"
         placeItems="center"
+        whileHover={{ scale: 1.2 }}
+        whileTap={{ scale: 0.8 }}
       >
         <Image
           src={imageUrl}
-          alt={pokemon.name}
+          alt={pokemon?.name}
           width={{ base: 110, md: 200 }}
         />
       </MotionBox>
 
       <Heading textTransform="capitalize" textAlign="center">
-        {pokemon.name}
+        {pokemon?.name}
       </Heading>
       <Flex gap={4} justify="center" mb="6">
         {pokemon?.types?.length > 0
@@ -58,15 +66,17 @@ export default function PokemonCard({ pokemon }: { pokemon: Pokemon }) {
             ))
           : null}
       </Flex>
-      <Flex justify="center">
-        <Button
-          colorScheme="green"
-          variant="outline"
-          onClick={handleNavigateToPokemonDetails}
-        >
-          Explore pokemon
-        </Button>
-      </Flex>
+      {!hideExplore ? (
+        <Flex justify="center">
+          <Button
+            colorScheme="green"
+            variant="outline"
+            onClick={handleNavigateToPokemonDetails}
+          >
+            Explore pokemon
+          </Button>
+        </Flex>
+      ) : null}
     </MotionBox>
   );
 }

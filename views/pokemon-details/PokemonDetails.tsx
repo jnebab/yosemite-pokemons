@@ -15,17 +15,17 @@ import { useGetPokemonResult } from "../../lib/atoms";
 import useMyPokemons from "../../lib/hooks/useMyPokemons";
 import { Pokemon, PokemonStat } from "../../lib/types/pokemon";
 import getColorScheme from "../../lib/utils/getProgressColorScheme";
+import PokemonCard from "../pokemon-card";
 
 export default function PokemonDetails() {
   const router = useRouter();
   const { id } = router?.query;
-  const { data: pokemon, isLoading } = useGetPokemonResult(id as string);
+  const { data: pokemon } = useGetPokemonResult(id as string);
 
   const { isPokemonInList, addPokemon, removePokemon } = useMyPokemons(
     pokemon as Pokemon
   );
 
-  const imageUrl = pokemon?.sprites?.other?.["official-artwork"].front_default;
   return (
     <Layout title="Pokemon" description="Pokemon details page">
       <Flex
@@ -38,16 +38,7 @@ export default function PokemonDetails() {
         gap={6}
       >
         <Flex direction="column" align="center" justify="center" gap={6}>
-          <MotionBox display="grid" placeItems="center">
-            <Image
-              src={imageUrl}
-              alt={pokemon?.name}
-              width={{ base: 250, md: 400 }}
-            />
-          </MotionBox>
-          <MotionBox textTransform="capitalize">
-            <Heading>{pokemon?.name}</Heading>
-          </MotionBox>
+          <PokemonCard pokemon={pokemon as Pokemon} hideExplore />
           <Flex gap="4" justify="center" mb="4">
             {isPokemonInList ? (
               <Button
