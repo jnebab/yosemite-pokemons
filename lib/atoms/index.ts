@@ -9,6 +9,8 @@ import { Pokemon } from "../types/pokemon";
  */
 const hydratedAtom = atom<boolean>(false);
 
+const useHydratedAtom = () => useAtom(hydratedAtom);
+
 /**
  * myPokemons atom hold user's own pokemon list and it uses "atomWithStorage" function
  * because the data need to be saved and synced with locale storage.
@@ -60,7 +62,7 @@ const useGetPokemonResult = () => {
 
 export {
   myPokemonsAtom,
-  hydratedAtom,
+  useHydratedAtom,
   useSearchText,
   useGetPokemonResult,
   useMyPokemonsAtom,

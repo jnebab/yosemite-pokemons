@@ -1,13 +1,10 @@
-import { Button, Flex, Heading, Image } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useEffect, useMemo } from "react";
+import { Button, Flex, Heading, Image } from "@chakra-ui/react";
 import MotionBox from "../../components/motion/MotionBox";
 import Layout from "../../layout";
-import {
-  useGetPokemonResult,
-  useMyPokemonsAtom,
-  useSearchText,
-} from "../../lib/atoms";
+import { useGetPokemonResult, useSearchText } from "../../lib/atoms";
+import useMyPokemons from "../../lib/hooks/useMyPokemons";
 import { Pokemon } from "../../lib/types/pokemon";
 
 export default function PokemonDetails() {
@@ -15,7 +12,6 @@ export default function PokemonDetails() {
   const { id } = router?.query;
   const [, setPokemonId] = useSearchText();
   const { data: pokemon, isLoading } = useGetPokemonResult();
-  const [myPokemons, setMyPokemons] = useMyPokemonsAtom();
 
   useEffect(() => {
     if (!!id) {
@@ -23,24 +19,9 @@ export default function PokemonDetails() {
     }
   }, [id]);
 
-  const handleAddPokemonToList = () => {
-    setMyPokemons([...myPokemons, pokemon as Pokemon]);
-  };
-
-  const handleRemovePokemonFromList = () => {
-    const filteredPokemons = myPokemons.filter(
-      (myPokemon) => myPokemon.id !== pokemon?.id
-    );
-    setMyPokemons(filteredPokemons);
-  };
-
-  const isPokemonInList = useMemo(() => {
-    return (
-      myPokemons.findIndex(
-        (myPokemon: Pokemon) => myPokemon?.id === pokemon?.id
-      ) !== -1
-    );
-  }, [myPokemons, pokemon]);
+  const { isPokemonInList, addPokemon, removePokemon } = useMyPokemons(
+    pokemon as Pokemon
+  );
 
   const imageUrl = pokemon?.sprites?.other?.["official-artwork"].front_default;
   return (
@@ -50,7 +31,7 @@ export default function PokemonDetails() {
           <Image
             src={imageUrl}
             alt={pokemon?.name}
-            width={{ base: 300, md: 500 }}
+            width={{ base: 300, md: 400 }}
           />
         </MotionBox>
         <MotionBox textTransform="capitalize">
@@ -58,11 +39,11 @@ export default function PokemonDetails() {
         </MotionBox>
         <Flex gap="4" justify="center">
           {isPokemonInList ? (
-            <Button colorScheme="red" onClick={handleRemovePokemonFromList}>
+            <Button colorScheme="red" onClick={removePokemon}>
               Remove from My Pokemons
             </Button>
           ) : (
-            <Button colorScheme="green" onClick={handleAddPokemonToList}>
+            <Button colorScheme="green" onClick={addPokemon}>
               Add to My Pokemons
             </Button>
           )}

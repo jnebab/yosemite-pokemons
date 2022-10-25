@@ -1,6 +1,5 @@
-import { useMemo } from "react";
+import { Fragment } from "react";
 import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
-import { useMyPokemonsAtom } from "../../lib/atoms";
 import { Pokemon, PokemonType } from "../../lib/types/pokemon";
 import MotionBox from "../../components/motion/MotionBox";
 import { useRouter } from "next/router";
@@ -17,13 +16,14 @@ export default function PokemonCard({ pokemon }: { pokemon: Pokemon }) {
     <MotionBox position="relative">
       <Heading
         fontSize={{
-          base: "8rem",
+          base: "6rem",
           md: "12rem",
         }}
         zIndex={1}
         position="relative"
         color="gray.300"
         opacity="0.4"
+        textAlign="center"
       >
         {`#${pokemon.id}`}
       </Heading>
@@ -39,7 +39,7 @@ export default function PokemonCard({ pokemon }: { pokemon: Pokemon }) {
         <Image
           src={imageUrl}
           alt={pokemon.name}
-          width={{ base: 140, md: 200 }}
+          width={{ base: 110, md: 200 }}
         />
       </MotionBox>
 
@@ -49,12 +49,12 @@ export default function PokemonCard({ pokemon }: { pokemon: Pokemon }) {
       <Flex gap={4} justify="center" mb="6">
         {pokemon?.types?.length > 0
           ? pokemon.types.map((type: PokemonType, index) => (
-              <>
+              <Fragment key={index}>
                 <Text fontWeight={600} textTransform="capitalize">
                   {type.type.name}
                 </Text>
                 {index !== pokemon.types.length - 1 ? "|" : null}
-              </>
+              </Fragment>
             ))
           : null}
       </Flex>
