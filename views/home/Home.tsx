@@ -1,4 +1,4 @@
-import { Button, Flex, Input, SkeletonCircle } from "@chakra-ui/react";
+import { Button, Flex, Input } from "@chakra-ui/react";
 import random from "lodash/random";
 import React, { useState } from "react";
 import MotionBox from "../../components/motion/MotionBox";
@@ -49,7 +49,6 @@ export default function Home() {
           </Button>
         </MotionBox>
         <MotionBox>
-          {isLoading ? <SkeletonCircle size="50" /> : null}
           {!isLoading && !!pokemon ? <PokemonCard pokemon={pokemon} /> : null}
         </MotionBox>
       </Flex>

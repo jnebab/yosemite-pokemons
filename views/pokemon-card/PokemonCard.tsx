@@ -19,7 +19,12 @@ export default function PokemonCard({
 
   const imageUrl = pokemon?.sprites?.other?.["official-artwork"].front_default;
   return (
-    <MotionBox position="relative">
+    <MotionBox
+      position="relative"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <Heading
         fontSize={{
           base: "6rem",
