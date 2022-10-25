@@ -42,16 +42,18 @@ const useSearchText = () => useAtom(updateSearchText);
 /**
  * useGetPokemonResult is a custom atom that will make the request to poke api and retrieve the expected result
  */
-const useGetPokemonResult = () => {
+const useGetPokemonResult = (id?: string) => {
   const [searchText] = useSearchText();
+  const pokemonId = id || searchText;
   return useQuery(
-    ["useGetPokemonResult", searchText],
+    ["useGetPokemonResult", pokemonId],
     async () => {
-      const result = await fetch(`/api/v2/pokemon/${searchText}`);
+      const result = await fetch(`/api/v2/pokemon/${pokemonId}`);
       const data = await result.json();
       return data as Pokemon;
     },
     {
+      enabled: !!pokemonId,
       retry: false,
       onError: (error: any) => {
         console.log("useGetPokemonResult error", error);

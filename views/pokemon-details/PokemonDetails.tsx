@@ -1,23 +1,25 @@
-import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { Button, Flex, Heading, Image } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  Image,
+  Progress,
+  Show,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import MotionBox from "../../components/motion/MotionBox";
 import Layout from "../../layout";
-import { useGetPokemonResult, useSearchText } from "../../lib/atoms";
+import { useGetPokemonResult } from "../../lib/atoms";
 import useMyPokemons from "../../lib/hooks/useMyPokemons";
-import { Pokemon } from "../../lib/types/pokemon";
+import { Pokemon, PokemonStat } from "../../lib/types/pokemon";
+import getColorScheme from "../../lib/utils/getProgressColorScheme";
 
 export default function PokemonDetails() {
   const router = useRouter();
   const { id } = router?.query;
-  const [, setPokemonId] = useSearchText();
-  const { data: pokemon, isLoading } = useGetPokemonResult();
-
-  useEffect(() => {
-    if (!!id) {
-      setPokemonId(id as string);
-    }
-  }, [id]);
+  const { data: pokemon, isLoading } = useGetPokemonResult(id as string);
 
   const { isPokemonInList, addPokemon, removePokemon } = useMyPokemons(
     pokemon as Pokemon
@@ -26,28 +28,96 @@ export default function PokemonDetails() {
   const imageUrl = pokemon?.sprites?.other?.["official-artwork"].front_default;
   return (
     <Layout title="Pokemon" description="Pokemon details page">
-      <Flex direction="column" align="center" justify="center" gap={6}>
-        <MotionBox display="grid" placeItems="center">
-          <Image
-            src={imageUrl}
-            alt={pokemon?.name}
-            width={{ base: 300, md: 400 }}
-          />
-        </MotionBox>
-        <MotionBox textTransform="capitalize">
-          <Heading>{pokemon?.name}</Heading>
-        </MotionBox>
-        <Flex gap="4" justify="center">
-          {isPokemonInList ? (
-            <Button colorScheme="red" onClick={removePokemon}>
-              Remove from My Pokemons
-            </Button>
-          ) : (
-            <Button colorScheme="green" onClick={addPokemon}>
-              Add to My Pokemons
-            </Button>
-          )}
+      <Flex
+        direction={{
+          base: "column",
+          md: "row",
+        }}
+        align="center"
+        justify="center"
+        gap={6}
+      >
+        <Flex direction="column" align="center" justify="center" gap={6}>
+          <MotionBox display="grid" placeItems="center">
+            <Image
+              src={imageUrl}
+              alt={pokemon?.name}
+              width={{ base: 250, md: 400 }}
+            />
+          </MotionBox>
+          <MotionBox textTransform="capitalize">
+            <Heading>{pokemon?.name}</Heading>
+          </MotionBox>
+          <Flex gap="4" justify="center" mb="4">
+            {isPokemonInList ? (
+              <Button
+                colorScheme="red"
+                onClick={removePokemon}
+                fontSize={{
+                  base: "xs",
+                  md: "base",
+                }}
+              >
+                Remove from My Pokemons
+              </Button>
+            ) : (
+              <Button
+                colorScheme="green"
+                onClick={addPokemon}
+                fontSize={{
+                  base: "xs",
+                  md: "base",
+                }}
+              >
+                Add to My Pokemons
+              </Button>
+            )}
+          </Flex>
         </Flex>
+        {!!pokemon?.stats && pokemon?.stats?.length > 0 ? (
+          <Stack
+            spacing={4}
+            w={{
+              base: "100%",
+              md: "50%",
+            }}
+          >
+            {pokemon?.stats.map((pokemonStat: PokemonStat) => (
+              <Flex gap="4" align="center">
+                <MotionBox
+                  minWidth={{
+                    base: 120,
+                    md: 150,
+                  }}
+                >
+                  <Text
+                    textTransform="uppercase"
+                    fontWeight={600}
+                    fontSize={{
+                      base: "xs",
+                      md: "base",
+                    }}
+                  >
+                    {pokemonStat.stat.name?.replaceAll("-", " ")}
+                  </Text>
+                </MotionBox>
+                <Show above="md">
+                  <MotionBox minWidth={30}>
+                    <Text>{pokemonStat.base_stat}</Text>
+                  </MotionBox>
+                </Show>
+                <Progress
+                  colorScheme={getColorScheme(pokemonStat.base_stat)}
+                  size="md"
+                  value={pokemonStat.base_stat}
+                  max={150}
+                  width="100%"
+                  rounded="md"
+                />
+              </Flex>
+            ))}
+          </Stack>
+        ) : null}
       </Flex>
     </Layout>
   );

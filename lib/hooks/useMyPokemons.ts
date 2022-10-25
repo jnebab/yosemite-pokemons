@@ -10,6 +10,7 @@ export default function useMyPokemons(pokemon: Pokemon) {
     if (myPokemons?.length === 6) {
       toast({
         title: "Team limit reached!",
+        position: "top-right",
         description:
           "You already reached the maximum number of pokemons in your team.",
         status: "error",

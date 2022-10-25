@@ -39,7 +39,10 @@ export default function Header() {
       h={"80px"}
       mb={6}
     >
-      <Heading>Pokemites</Heading>
+      <Heading>
+        {" "}
+        <NextLink href="/">Pokemites</NextLink>
+      </Heading>
       <Show above="md">
         <Flex gap={6}>
           <NavLinks />

@@ -46,6 +46,15 @@ export interface PokemonType {
   };
 }
 
+export interface PokemonStat {
+  base_stat: number;
+  effort: number;
+  stat: {
+    name: string;
+    url: string;
+  };
+}
+
 export interface Pokemon {
   id: number;
   name: string;
@@ -58,4 +67,5 @@ export interface Pokemon {
   forms: PokemonForms[];
   sprites: PokemonSprites;
   types: PokemonType[];
+  stats: PokemonStat[];
 }
